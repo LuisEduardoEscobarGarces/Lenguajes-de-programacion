@@ -35,6 +35,14 @@ public class Rabbit implements Runnable{
         this.labelRabbit = labelRabbit;
         
     }
+
+    Rabbit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void otherThread(Thread turtle){
+        turtle.interrupt();;
+    }
     public void move(){
         position = position - speed;
     }
@@ -44,23 +52,25 @@ public class Rabbit implements Runnable{
     public void run() {
         try{
             
-            while( position >= 0 ){
+            while( position > 0 ){
                 move();
                 String winner="RABBIT";
                 //System.out.println("pos"+position);
-                if(position < 0 ){
+                if(position <= 0 ){
 
                     //clq = new ConcurrentLinkedQueue<>();   
                     //clq.add(1);
                     //races = new Races();
                     //races.numRaces(clq);
                     
-                    labelRabbit.setBounds(50,position,200,200);
-                    Thread.sleep(rest);
-                    //field = new Field();
-                    //field.endOfRace(position, winner);
+                    
+                    
+                    field = new Field();
+                    field.endOfRace(position, winner);
                     
                 }
+                Thread.sleep(rest);
+                labelRabbit.setBounds(50,position,200,200);
                 
                 
             }

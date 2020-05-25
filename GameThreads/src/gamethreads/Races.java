@@ -5,6 +5,9 @@
  */
 package gamethreads;
 
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -16,9 +19,18 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Races {
     
     private static ConcurrentLinkedQueue<Integer> clq2 ; 
+    private ArrayList anyObject =new ArrayList();
+    //private ArrayList syncList = Collections.synchronizedList(  anyObject );
     Rabbit rabbit;
     Turtle turtle;
     private static boolean flag=false;
+    
+    public Races(){
+        anyObject = new ArrayList();
+    
+    }
+    
+    
     public synchronized void  numRaces( ConcurrentLinkedQueue<Integer> clq) throws InterruptedException{
         clq2 = new ConcurrentLinkedQueue<>();
         clq2.add( clq.peek() );
@@ -45,6 +57,10 @@ public class Races {
             
         }
    
+    
+    }
+    public synchronized void winner(ArrayList anyObject){
+        
     
     }
     

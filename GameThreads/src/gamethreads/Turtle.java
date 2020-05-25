@@ -30,6 +30,15 @@ public class Turtle implements Runnable{
         this.distance = distance;
         this.labelTurtle = labelTurtle;
     }
+
+    Turtle() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public void otherThread(Thread rabbit){
+        rabbit.interrupt();;
+    }
+    
+    
     public void move(){
         position = position - speed;
     }
@@ -37,27 +46,35 @@ public class Turtle implements Runnable{
     ConcurrentLinkedQueue<Integer> clq; 
     @Override
     public void run() {
-        while( position >= 0 ){
-            move();
-            String winner="TURTLE";
-            if(position < 0 ){
-               //priorityBlockingQueue.add(winner);
-                //races.numRaces(priorityBlockingQueue ); 
-                //clq = new ConcurrentLinkedQueue<>();
-                //clq.add(2);
-                //System.out.println(clq.peek());
-//                races = new Races();
-//                try {
-//                    races.numRaces(clq);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(Turtle.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-                //field = new Field();
-                //field.endOfRace(position, winner);
-               //Thread.currentThread().interrupt();
-               labelTurtle.setBounds(250,position,200,200);
+        try{
+            while( position > 0 ){
+                move();
+                String winner="TURTLE";
+                if(position <= 0 ){
+                   //priorityBlockingQueue.add(winner);
+                    //races.numRaces(priorityBlockingQueue ); 
+                    //clq = new ConcurrentLinkedQueue<>();
+                    //clq.add(2);
+                    //System.out.println(clq.peek());
+    //                races = new Races();
+    //                try {
+    //                    races.numRaces(clq);
+    //                } catch (InterruptedException ex) {
+    //                    Logger.getLogger(Turtle.class.getName()).log(Level.SEVERE, null, ex);
+    //                }
+                    field = new Field();
+                    field.endOfRace(position, winner);
+
+
+                }
+                int rest = 0;
+                Thread.sleep(rest);
+                labelTurtle.setBounds(250,position,200,200);
+
             }
-            
+        } 
+        catch(InterruptedException e){
+        
         }
     }
     

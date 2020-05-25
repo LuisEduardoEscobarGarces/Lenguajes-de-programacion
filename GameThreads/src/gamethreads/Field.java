@@ -61,38 +61,43 @@ public class Field extends JFrame{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //labelTurtle.setBounds(250,600,200,200);
-                Thread rabbitThread = new Thread( new Rabbit ( 600, 5, 50, 1000 , labelRabbit));   // (int position,int speed, int rest,int distance, JLabel labelRabbit){
-                Thread turtleThread = new Thread( new Turtle ( 600, 2, 1000, labelTurtle ));  
+                Rabbit rabbit = new Rabbit ( 600,500, 100, 1000 , labelRabbit);
+                Turtle turtle =  new Turtle ( 600, 600, 1000, labelTurtle );
+                Thread rabbitThread = new Thread( rabbit );   // (int position,int speed, int rest,int distance, JLabel labelRabbit){
+                Thread turtleThread = new Thread( turtle );  
                 rabbitThread.start();       
                 turtleThread.start();
+                rabbit.otherThread(turtleThread);
+                turtle.otherThread(rabbitThread);
+                
                 String winner;
-                boolean f=true;
-                //it checks if any of the threads end,but it has to check it constantly
-                while(f){
-                    //System.out.println("Turtle is alive "+turtleThread.isAlive()+" rabbit "+rabbitThread.isAlive());
-                    //until one of threads end its task, thats how we know what thread ends first
-                    if(rabbitThread.isAlive() && !turtleThread.isAlive()){
-                        rabbitThread.interrupt();
-                        System.out.println("The turtle WON");
-                        winner="TURTLE WON";
-                        labelRabbit = new JLabel(winner);
-                         getContentPane().add(labelRabbit);
-                        labelRabbit.setBounds(5,100,200,200);
-                        
-                        f=false;
-                    }
-                    else if(!rabbitThread.isAlive() && turtleThread.isAlive()) {
-                        turtleThread.interrupt();
-                        System.out.println("The rabbit WON");
-                        winner="RABBIT WON";
-                        labelRabbit = new JLabel(winner);
-                         getContentPane().add(labelRabbit);
-                        labelRabbit.setBounds(5,100,200,200);
-                        f=false;
-                    }
-                    if(!rabbitThread.isAlive() && !turtleThread.isAlive())
-                        f=false;
-                }
+//                boolean f=true;
+//                //it checks if any of the threads end,but it has to check it constantly
+//                while(f){
+//                    //System.out.println("Turtle is alive "+turtleThread.isAlive()+" rabbit "+rabbitThread.isAlive());
+//                    //until one of threads end its task, thats how we know what thread ends first
+//                    if(rabbitThread.isAlive() && !turtleThread.isAlive()){
+//                        rabbitThread.interrupt();
+//                        System.out.println("The turtle WON");
+//                        winner="TURTLE WON";
+//                        labelRabbit = new JLabel(winner);
+//                         getContentPane().add(labelRabbit);
+//                        labelRabbit.setBounds(5,100,200,200);
+//                        
+//                        f=false;
+//                    }
+//                    else if(!rabbitThread.isAlive() && turtleThread.isAlive()) {
+//                        turtleThread.interrupt();
+//                        System.out.println("The rabbit WON");
+//                        winner="RABBIT WON";
+//                        labelRabbit = new JLabel(winner);
+//                         getContentPane().add(labelRabbit);
+//                        labelRabbit.setBounds(5,100,200,200);
+//                        f=false;
+//                    }
+//                    if(!rabbitThread.isAlive() && !turtleThread.isAlive())
+//                        f=false;
+//                }
 
 
                 }
@@ -163,25 +168,34 @@ public class Field extends JFrame{
         setVisible( true ); 
         setResizable(false);
     }
-    private static boolean flag = false;
+    private  boolean flagTurtle = false; private  boolean flagRabbit = false;
+    
      public synchronized void endOfRace(int finalPosition, String winner){
-        if( finalPosition == 0 ){
-            if( flag == false && winner.contains("TURTLE")){
-                System.out.println("The winner is "+winner);
-                Thread.currentThread().interrupt();
-                flag = true;
-            }
-            else if( flag == true && winner.contains("RABBIT")){
-                System.out.println("The winner is "+winner);
-                Thread.currentThread().interrupt();
-                flag = true;
-            }
+        if( finalPosition <= 0 && winner.contains("TURTLE")){
             
+            //Thread.currentThread().interrupt();           
+            System.out.println("The winner is "+winner);
+            //Thread.currentThread().interrupt();                 
             labelField = new JLabel(winner);
             getContentPane().add(labelField);
             labelField.setBounds(5,70,90,70);
+            flagTurtle = true;
+            
             
         }
+        else if( finalPosition <= 0 && winner.contains("RABBIT")){
+            //Thread.currentThread().interrupt();           
+            System.out.println("The winner is "+winner);
+            //Thread.currentThread().interrupt();                
+            labelField = new JLabel(winner);
+            getContentPane().add(labelField);
+            labelField.setBounds(5,70,90,70);
+           flagRabbit = true;
+        }
+         if(flagRabbit ==true && flagTurtle == true ){
+            System.out.println("Both WIIIN!!!");
+        }
+        
     
 
     }
